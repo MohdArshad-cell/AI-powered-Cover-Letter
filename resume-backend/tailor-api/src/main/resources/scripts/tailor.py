@@ -6,7 +6,7 @@ import google.generativeai as genai
 import contextlib
 
 # --- CONFIGURATION ---
-API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyDzlT-wD0owETwpqiAnQ0UfhDWf6Ug40WQ")
+API_KEY = os.getenv("GEMINI_API_KEY", "API KEY")
 MODEL_NAME = "gemini-2.5-flash-lite"
 
 # --- HELPER FUNCTIONS ---
