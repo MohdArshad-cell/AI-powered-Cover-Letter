@@ -1,22 +1,21 @@
 import { useState } from 'react';
-import { saveAs } from 'file-saver';
+import jsPDF from 'jspdf';
 import './App.css';
 
 function App() {
   const [resume, setResume] = useState('');
   const [jobDescription, setJobDescription] = useState('');
-  const [tailoredResume, setTailoredResume] = useState('');
+  const [generatedCoverLetter, setGeneratedCoverLetter] = useState(''); // Renamed state
   const [isLoading, setIsLoading] = useState(false);
-  
-  // --- NEW: State to manage the copy button's text ---
-  const [copyButtonText, setCopyButtonText] = useState('Copy Code');
+  const [copyButtonText, setCopyButtonText] = useState('Copy Text');
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    setCopyButtonText('Copy Code'); // Reset copy button on new submission
-    setTailoredResume('Generating your tailored resume...');
+    setCopyButtonText('Copy Text');
+    setGeneratedCoverLetter('Generating your cover letter...'); // Updated text
     try {
-      const response = await fetch('http://localhost:8080/api/tailor-resume', {
+      // *** CHANGE: Updated API endpoint ***
+      const response = await fetch('http://localhost:8080/api/generate-cover-letter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ resume, jobDescription }),
@@ -28,27 +27,33 @@ function App() {
       }
 
       const data = await response.json();
-      setTailoredResume(data.tailoredResume);
+      // *** CHANGE: Updated response field ***
+      setGeneratedCoverLetter(data.generatedCoverLetter);
     } catch (error) {
       console.error('Error:', error);
-      setTailoredResume(`Failed to tailor resume. Please check the console for errors. Details: ${error.message}`);
+      setGeneratedCoverLetter(`Failed to generate cover letter. Please check the console for errors. Details: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleTxtDownload = () => {
-    const blob = new Blob([tailoredResume], { type: 'text/plain;charset=utf-8' });
-    saveAs(blob, 'tailored_resume.txt');
+  const handlePdfDownload = () => {
+    const doc = new jsPDF();
+    const text = generatedCoverLetter;
+
+    // The splitTextToSize method automatically handles text wrapping
+    const lines = doc.splitTextToSize(text, 180); // 180 is the max width of the text line
+
+    doc.text(lines, 10, 10); // Add the text to the PDF
+    doc.save('cover_letter.pdf'); // Save the PDF
   };
 
-  // --- NEW: Function to handle copying to clipboard ---
   const handleCopy = () => {
-    navigator.clipboard.writeText(tailoredResume).then(() => {
+    navigator.clipboard.writeText(generatedCoverLetter).then(() => {
       setCopyButtonText('Copied!');
       setTimeout(() => {
-        setCopyButtonText('Copy Code');
-      }, 2000); // Reset after 2 seconds
+        setCopyButtonText('Copy'); // Update reset text
+      }, 2000); 
     }, (err) => {
       console.error('Could not copy text: ', err);
       setCopyButtonText('Failed!');
@@ -63,7 +68,7 @@ function App() {
         <div className="nav-panel">
           <div>
             <h1 style={{ textAlign: 'left', fontSize: '1.8rem', color: 'var(--accent-cyan)', marginBottom: '2rem' }}>
-              AI Resume Maker
+              AI Cover Letter Generator
             </h1>
           </div>
           <button
@@ -71,7 +76,7 @@ function App() {
             onClick={handleSubmit}
             disabled={isLoading || !resume || !jobDescription}
           >
-            {isLoading ? 'Tailoring...' : 'Tailor My Resume'}
+            {isLoading ? 'Generating...' : 'Generate My Cover Letter'}
           </button>
         </div>
 
@@ -98,19 +103,18 @@ function App() {
 
         <div className="preview-panel">
           <div className="preview-header">
-            <h2>Tailored Resume Preview</h2>
+            <h2>Generated Cover Letter</h2>
             <div className="download-buttons">
-            {/* --- NEW: Copy Button Added Here --- */}
-            <button onClick={handleCopy} disabled={!tailoredResume || isLoading || tailoredResume.startsWith('Failed')} className="btn btn-primary">
-              {copyButtonText}
-            </button>
-            <button onClick={handleTxtDownload} disabled={!tailoredResume || isLoading || tailoredResume.startsWith('Failed')} className="btn btn-primary">
-              Download TXT
-            </button>
-          </div>
+    <button onClick={handleCopy} disabled={!generatedCoverLetter || isLoading || generatedCoverLetter.startsWith('Failed')} className="btn btn-primary">
+      {copyButtonText === 'Copied!' ? 'Copied!' : 'Copy'} {/* Changed Text */}
+    </button>
+    <button onClick={handlePdfDownload} disabled={!generatedCoverLetter || isLoading || generatedCoverLetter.startsWith('Failed')} className="btn btn-primary">
+      Download {/* Changed Text */}
+    </button>
+</div>
           </div>
           <pre id="preview-content">
-            {tailoredResume}
+            {generatedCoverLetter}
           </pre>
           
         </div>

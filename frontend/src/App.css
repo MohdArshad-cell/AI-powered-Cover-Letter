@@ -49,10 +49,17 @@ body {
     overflow: hidden;
 }
 
+/* Find the .btn class and change the padding */
 .btn {
-    display: inline-block; text-decoration: none; padding: 0.75rem 2rem;
-    border-radius: 8px; font-weight: 600; transition: all 0.3s ease;
-    border: 1px solid transparent; cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+    padding: 0.75rem 1.25rem; /* Reduced horizontal padding from 2rem to 1.25rem */
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    cursor: pointer;
+    white-space: nowrap; /* Ensures button text stays on one line */
 }
 .btn-primary {
     background-color: var(--card-bg); color: var(--text-primary);
@@ -147,23 +154,30 @@ textarea:focus {
 
 /* Find and replace these CSS rules in App.css */
 
+/* Replace the old .preview-header rules with this block */
 .preview-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap; /* Allows items to wrap to the next line */
+  justify-content: space-between; /* Pushes title and buttons to opposite ends */
+  align-items: center;          /* Vertically aligns them in the middle */
   margin-bottom: 1rem;
 }
 
 .preview-header h2 {
-  width: 100%; /* Makes the title take the full first line */
-  margin-bottom: 10px; /* Adds space between the title and buttons */
+  margin: 0;
+  font-size: 1.5rem; /* Adjust this value as needed */
+  white-space: nowrap; /* Prevents the title text from wrapping */
 }
 
 .download-buttons {
   display: flex;
-  gap: 10px;
-  width: 100%; /* Makes the container take the full width */
-  justify-content: center; /* Centers the buttons inside it */
-   margin-top: 1rem;
+  gap: 10px; /* Creates space between the buttons */
+}
+#preview-content {
+  white-space: pre-wrap;      /* This makes the text wrap */
+  overflow-wrap: break-word;  /* This breaks long words if necessary */
+  font-family: 'Poppins', sans-serif; /* Ensures consistent font */
+  padding: 1rem; /* Adds some internal spacing */
+  box-sizing: border-box;
+  height: 100%; /* Ensures it fills the container */
+  overflow-y: auto; /* Adds a vertical scrollbar if needed */
 }

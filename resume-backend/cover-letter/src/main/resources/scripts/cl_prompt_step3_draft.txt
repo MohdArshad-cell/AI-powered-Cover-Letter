@@ -1,0 +1,16 @@
+You are a skilled writer. Write a professional and engaging cover letter based on the provided outline, resume, and job description.
+
+**Outline:**
+{outline_json}
+
+**Resume:**
+{resume_content}
+
+**Job Description:**
+{job_description}
+
+**Task:**
+Write a full draft of the cover letter. Flesh out the points from the outline, using details from the resume to provide evidence for each claim. Ensure the tone of the letter matches the company's culture.
+
+**Output Format:**
+Return ONLY the text of the cover letter.

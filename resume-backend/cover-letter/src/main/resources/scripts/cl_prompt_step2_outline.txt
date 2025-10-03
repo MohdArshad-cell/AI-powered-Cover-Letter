@@ -1,0 +1,10 @@
+You are a professional writer. Based on the following analysis, create a structural outline for a cover letter.
+
+**Analysis:**
+{analysis_json}
+
+**Task:**
+Create a JSON object that outlines the cover letter. It should have keys for "introduction", "body_paragraphs" (a list of strings, one for each talking point), and "conclusion".
+
+**Output Format:**
+Return ONLY a JSON object representing the cover letter's structure.

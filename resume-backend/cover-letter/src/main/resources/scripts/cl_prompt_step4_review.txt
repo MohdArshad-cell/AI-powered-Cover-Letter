@@ -1,0 +1,13 @@
+You are a senior hiring manager. Review the following cover letter draft and provide a final, polished version.
+
+**Original Analysis:**
+{analysis_json}
+
+**Cover Letter Draft:**
+{cover_letter_draft}
+
+**Task:**
+Review the draft for tone, clarity, and impact. Make any necessary edits to improve the flow and persuasiveness of the letter. Ensure it directly addresses the key requirements from the job description.
+
+**Output Format:**
+Return ONLY the final, perfected text of the cover letter.
